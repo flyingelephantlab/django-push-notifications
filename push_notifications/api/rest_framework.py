@@ -49,7 +49,7 @@ class APNSDeviceSerializer(ModelSerializer):
 		# iOS device tokens are 256-bit hexadecimal (64 characters). In 2016 Apple is increasing
 		# iOS device tokens to 100 bytes hexadecimal (200 characters).
 
-		if hex_re.match(value) is None or len(value) not in (64, 200):
+		if hex_re.match(value) is None:
 			raise ValidationError("Registration ID (device token) is invalid")
 
 		return value
