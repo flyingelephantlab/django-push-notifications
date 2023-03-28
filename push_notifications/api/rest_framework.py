@@ -46,10 +46,12 @@ class APNSDeviceSerializer(ModelSerializer):
 		model = APNSDevice
 
 	def validate_registration_id(self, value):
-		# iOS device tokens are 256-bit hexadecimal (64 characters). In 2016 Apple is increasing
-		# iOS device tokens to 100 bytes hexadecimal (200 characters).
+		# According to Apple Docs "APNs device tokens are of variable length. Do not hard-code their size."
+		# Source: https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622958-application
+		# However, we need to make sure that token length is not greater than 200 because this is the max_length
+		# for the database field.
 
-		if hex_re.match(value) is None:
+		if hex_re.match(value) is None or len(value) > 200:
 			raise ValidationError("Registration ID (device token) is invalid")
 
 		return value
