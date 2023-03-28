@@ -51,7 +51,7 @@ class APNSDeviceSerializer(ModelSerializer):
 		# However, we need to make sure that token length is not greater than 200 because this is the max_length
 		# for the database field.
 
-		if hex_re.match(value) is None or len(value) > 200:
+		if hex_re.match(value) is None:
 			raise ValidationError("Registration ID (device token) is invalid")
 
 		return value
